@@ -111,9 +111,12 @@ With a local server running and `setup:local` completed, these integration check
 node scripts/check-local.mjs
 node scripts/check-content-flow.mjs
 node scripts/check-blog-local.mjs
+node scripts/check-portal-bindings.mjs
 ```
 
 Run integration checks against a disposable local content store. They save/publish temporary test content and restore the starting content. The general integration check also creates a local test enquiry and uploaded image; it sends no email. The homepage content-flow check validates rendered HTML, not just React's serialized payload.
+
+The portal-bindings check verifies edited contact headings, resource titles and introductions, new-product specifications, and all newly added journey sections in private preview and after publication. It restores the original content and removes its temporary product before finishing.
 
 Optional route audit:
 

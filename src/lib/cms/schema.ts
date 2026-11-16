@@ -1,6 +1,7 @@
 import { z } from "zod";
 import seed from "@/data/site.json";
 import { originalPageSchema } from "./original-copy-schema";
+import { roleSections } from "../role-sections";
 const text = z.string().max(12000);
 const short = z.string().max(300);
 const slug = z
@@ -170,24 +171,7 @@ export const contentSchema = z.object({
         secondaryCta: link.optional(),
         projectCategories: z.array(short).max(20).default([]),
         sections: z
-          .array(
-            z.enum([
-              "network",
-              "projects",
-              "products",
-              "visualiser",
-              "resources",
-              "about",
-              "contact",
-              "collections",
-              "technical",
-              "brands",
-              "testimonials",
-              "quiz",
-              "metacity",
-              "dealer-enquiry",
-            ]),
-          )
+          .array(z.enum(roleSections))
           .max(16),
       }),
     )

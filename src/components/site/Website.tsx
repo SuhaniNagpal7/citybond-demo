@@ -1106,6 +1106,16 @@ function ProductDetail({ p }: { p: Product }) {
               <p key={i}>{s}</p>
             ))}
           </div>
+          {p.specs.length > 0 && (
+            <dl>
+              {p.specs.map((spec, i) => (
+                <div key={i}>
+                  <dt>{spec.label}</dt>
+                  <dd>{spec.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
         </section>
       )}
       </div>
@@ -1274,8 +1284,8 @@ function ResourceDetail({ r }: { r: SiteContent["resources"][number] }) {
         <div>
           <Link className="breadcrumb" href="/resources">← {c.ui.resources}</Link>
           <p className="eyebrow">{r.type}</p>
-          <h1>{r.title}</h1>
-          <p className="resource-description">{r.description}</p>
+          <h1>{original?.title || r.title}</h1>
+          <p className="resource-description">{original ? original.description : r.description}</p>
           {r.href && <Button href={r.href}>{c.ui.source}</Button>}
         </div>
         <Photo src={r.image} alt={r.imageAlt} eager />
@@ -1645,8 +1655,10 @@ function ContactPage({
   const c = useContent();
   const original = useOriginalPage();
   if (type === "contact" && original) {
-    const messageIndex = original.blocks.findIndex(block => block.text === "Have a Message For Us?");
-    const presenceIndex = original.blocks.findIndex(block => block.text === "Our Presence");
+    // The portal may change the words or insert blocks. Bind structure to the
+    // imported section IDs, as the homepage does, rather than editable text.
+    const messageIndex = original.blocks.findIndex(block => block.id === "original-0007");
+    const presenceIndex = original.blocks.findIndex(block => block.id === "original-0009");
     if (messageIndex >= 0 && presenceIndex > messageIndex) return <div className="planning-page contact-page">
       <Intro page={page} />
       <section className="wrap contact-main">
