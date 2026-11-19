@@ -33,12 +33,14 @@ export function HomeContent({
   materials,
   projects,
   finder,
+  visualizer,
 }: {
   page: OriginalPage;
   content: SiteContent;
   materials: ReactNode;
   projects: ReactNode;
   finder: ReactNode;
+  visualizer?: ReactNode;
 }) {
   const groups = homeCopySections(page.blocks);
   // Keep the narrative intentional while rendering every editable block once.
@@ -90,7 +92,8 @@ export function HomeContent({
           );
         if (s.kind === "products")
           return (
-            <section className="home-collections" key={s.id}>
+            <div key={s.id}>
+            <section className="home-collections">
               <div className="wrap">
                 <div className="home-section-heading reveal">
                   <Heading section={s} />
@@ -141,6 +144,8 @@ export function HomeContent({
               </div>
               {materials}
             </section>
+            {visualizer}
+            </div>
           );
         if (s.kind === "benefits")
           return (

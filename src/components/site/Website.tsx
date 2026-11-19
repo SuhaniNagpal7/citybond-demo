@@ -15,6 +15,7 @@ import type { SiteContent, ContentPage, Product } from "@/lib/cms/schema";
 import { EnquiryForm } from "./forms";
 import { Blog } from "./Blog";
 import { HomeContent } from "./HomeContent";
+import { WallVisualizer } from "./WallVisualizer";
 import type { BlogView } from "@/lib/blog";
 import { canonicalPath, sitemapPaths } from "@/lib/routes";
 import { emptyProductFilters, filterCatalogue } from "@/lib/product-filters";
@@ -951,8 +952,8 @@ function Landing({ exploreHome = false }: { exploreHome?: boolean }) {
             materials={<ProductSection hideHeading />}
             projects={<ProjectSection hideHeading />}
             finder={<FeatureSection type="product-finder" />}
+            visualizer={<WallVisualizer content={c} />}
           />
-          <FeatureSection type="visualiser" />
           <ResourcesSection />
         </>
       ) : (
@@ -960,7 +961,7 @@ function Landing({ exploreHome = false }: { exploreHome?: boolean }) {
           <ProductSection />
           <ProjectSection />
           <AboutSection />
-          <FeatureSection type="visualiser" />
+          <WallVisualizer content={c} />
           <ResourcesSection />
         </>
       )}
@@ -1832,6 +1833,7 @@ function Visualiser() {
     <div className="planning-page visualiser-page">
       <Intro page={c.pages.find((p) => p.slug === "visualiser")!} />
       {original && <div className="original-copy wrap planning-introduction"><OriginalBlocks blocks={original.blocks.slice(0, 2)} title={original.title} /></div>}
+      <WallVisualizer content={c} heading={false} />
       <section className="wrap visualiser-layout section no-top">
         <div>
           {original && <div className="original-copy planning-instructions"><OriginalBlocks blocks={original.blocks.slice(2, 7)} title={original.title} /></div>}

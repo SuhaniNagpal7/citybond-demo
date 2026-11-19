@@ -54,6 +54,17 @@ The product finder collects an enquiry before revealing its shortlist. It saves 
 - A shared dynamic blog template, archive pages and four clearly labelled example articles.
 - Exact imported original-site copy, content provenance, stock-image attribution, and the full test suite.
 
+## Wall visualizer
+
+The home page (`/?explore=1`, after the collections) and `/visualiser` contain the wall visualizer. A visitor uploads a photo, taps a wall, and sees a CityBond product on that wall. A product change is one WebGL draw in the browser, with no server call.
+
+- **Where the code is**: `src/components/site/WallVisualizer.tsx` (screen), `src/lib/visualizer/worker.ts` (AI models, in a web worker), `src/lib/visualizer/masks.ts` (wall outlines), `src/lib/visualizer/geometry.ts` (wall directions and corners), `src/lib/visualizer/renderer.ts` (WebGL compositor), `src/lib/visualizer/materials.ts` (how each product is drawn).
+- **Models** (run in the visitor's browser with `@huggingface/transformers`, downloaded once from the Hugging Face CDN, about 130 MB in total): SegFormer-B2 ADE20K (says roughly where walls and buildings are), Depth Anything V2 Small (depth), SAM 2.1 Hiera Tiny (draws the exact outline). The photo does not leave the device.
+- **How a wall outline is made**: in a room, the wall model gives the wall area and SAM draws the outline, so pictures, lamps, mirrors and plants keep their shape. The visitor first sees a quick outline; the exact outline replaces it when SAM has read the photo. On a building, the wall model stays in charge (hard shadows confuse SAM): windows are taken out and the outline is moved onto the edges of the photo.
+- **Before production**: check the licence of each model for commercial use. The SegFormer weights were published under a research licence. The wall model sits behind one function in the worker, so it can be replaced.
+- **Products**: add or change a product look in `LOOKS` in `materials.ts`. Sheet images in `public/citybond/*-swatch.webp` are full 1220 x 2440 mm sheets. Products without a sheet image are not offered.
+- **Limits**: photos only (no video). Flat walls only. The panel size comes from one photo and is an estimate; the visitor can change it. `?gpu=1` turns on the WebGPU path, which is not tested on many devices yet.
+
 ## Routes and content coverage
 
 `content/required-urls.txt` contains the 184 supplied legacy URLs. The implementation covers:

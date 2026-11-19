@@ -12,6 +12,7 @@
     "test": "tsx --test tests/*.test.ts"
   },
   "dependencies": {
+    "@huggingface/transformers": "^4.3.2",
     "@vercel/blob": "^2.8.2",
     "next": "^16.4.2",
     "react": "19.2.8",
